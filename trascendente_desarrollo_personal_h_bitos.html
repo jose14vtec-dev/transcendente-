@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trascendente - Desarrollo Personal & Hábitos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ocean: {
+                            50: '#F2F7F7',
+                            100: '#E1EFEF',
+                            200: '#C5DFE0',
+                            300: '#9EC7C9',
+                            400: '#6FA8AB',
+                            500: '#4A8B8F',
+                            600: '#387074',
+                            700: '#2F5B5F',
+                            800: '#1D3B3E',
+                            900: '#0D1B2A', // Deep Oceanic Navy
+                            950: '#070F18'
+                        },
+                        sand: {
+                            50: '#FAF8F5',
+                            100: '#F4EFE6',
+                            200: '#E7DCB9',
+                            300: '#D9C59A',
+                            400: '#C7A870',
+                            500: '#B08B4B',
+                        },
+                        mist: '#E8F1F2',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '3xl': '1.75rem',
+                        '4xl': '2.25rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(111, 168, 171, 0.3);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(111, 168, 171, 0.6);
+        }
+        .ocean-gradient {
+            background: linear-gradient(135deg, #0D1B2A 0%, #1D3B3E 50%, #387074 100%);
+        }
+        .mist-card {
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-[#F4F7F6] text-slate-800 dark:bg-ocean-900 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-300">
+
+    <!-- APP HEADER -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-ocean-900/80 backdrop-blur-md border-b border-ocean-100 dark:border-ocean-800/50 px-4 lg:px-8 py-3 transition-colors">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-ocean-700 via-ocean-500 to-ocean-300 flex items-center justify-center text-white shadow-md shadow-ocean-500/20">
+                    <i data-lucide="waves" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-ocean-900 dark:text-white flex items-center gap-2">
+                        TRASCENDENTE
+                        <span class="text-xs px-2 py-0.5 rounded-full bg-ocean-100 dark:bg-ocean-800 text-ocean-700 dark:text-ocean-300 font-semibold">1% Mejor</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Filosofía coastal de hábitos y crecimiento diario</p>
+                </div>
+            </div>
+
+            <!-- Top Controls -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                
+                <!-- Install PWA Button -->
+                <button id="pwa-install-btn" class="hidden items-center gap-2 px-4 py-2 rounded-2xl bg-sand-100 dark:bg-ocean-800 text-sand-500 dark:text-sand-300 hover:bg-sand-200 transition font-medium text-xs sm:text-sm">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Instalar App</span>
+                </button>
+
+                <!-- Audio Test Button -->
+                <button onclick="playChimeSound()" title="Probar sonido de alarma" class="p-2.5 rounded-2xl bg-ocean-50 dark:bg-ocean-800/60 text-ocean-600 dark:text-ocean-300 hover:bg-ocean-100 transition active:scale-95">
+                    <i data-lucide="volume-2" class="w-5 h-5"></i>
+                </button>
+
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle" class="p-2.5 rounded-2xl bg-ocean-50 dark:bg-ocean-800/60 text-ocean-600 dark:text-ocean-300 hover:bg-ocean-100 transition active:scale-95">
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                </button>
+
+                <!-- User Profile Pill -->
+                <div class="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-ocean-800">
+                    <div class="w-9 h-9 rounded-2xl bg-sand-200 dark:bg-ocean-700 flex items-center justify-center font-bold text-ocean-900 dark:text-sand-200 text-xs">
+                        <span id="user-avatar-initials">M</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="bg-white/60 dark:bg-ocean-950/40 border-b border-ocean-100 dark:border-ocean-800/40 px-4 py-2 sticky top-[61px] z-30 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar py-1">
+            <button onclick="switchTab('habits')" id="tab-habits" class="tab-btn active-tab px-5 py-2.5 rounded-2xl font-medium text-sm flex items-center gap-2 shrink-0 transition-all">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i> Hábitos
+            </button>
+            <button onclick="switchTab('planner')" id="tab-planner" class="tab-btn inactive-tab px-5 py-2.5 rounded-2xl font-medium text-sm flex items-center gap-2 shrink-0 transition-all">
+                <i data-lucide="calendar" class="w-4 h-4"></i> Agenda
+            </button>
+            <button onclick="switchTab('analytics')" id="tab-analytics" class="tab-btn inactive-tab px-5 py-2.5 rounded-2xl font-medium text-sm flex items-center gap-2 shrink-0 transition-all">
+                <i data-lucide="trending-up" class="w-4 h-4"></i> Analítica 1%
+            </button>
+            <button onclick="switchTab('community')" id="tab-community" class="tab-btn inactive-tab px-5 py-2.5 rounded-2xl font-medium text-sm flex items-center gap-2 shrink-0 transition-all">
+                <i data-lucide="quote" class="w-4 h-4"></i> Muro Estoico
+            </button>
+            <button onclick="switchTab('friends')" id="tab-friends" class="tab-btn inactive-tab px-5 py-2.5 rounded-2xl font-medium text-sm flex items-center gap-2 shrink-0 transition-all">
+                <i data-lucide="users" class="w-4 h-4"></i> Red Disciplina
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+
+        <!-- DAILY STOIC BANNER -->
+        <div class="relative overflow-hidden rounded-3xl ocean-gradient text-white p-6 sm:p-8 shadow-xl shadow-ocean-900/10">
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-ocean-400/20 blur-2xl pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="space-y-2 max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-sand-200 text-xs font-medium backdrop-blur-md">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Reflexión Diaria Coastal
+                    </span>
+                    <blockquote id="daily-quote" class="text-base sm:text-lg italic font-light leading-relaxed">
+                        "No podemos dirigir el viento, pero sí podemos ajustar las velas."
+                    </blockquote>
+                    <p id="daily-author" class="text-xs text-ocean-200 font-semibold uppercase tracking-wider">— Séneca</p>
+                </div>
+                <button onclick="getNewQuote()" class="shrink-0 px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/15 backdrop-blur-md text-xs font-semibold flex items-center gap-2 transition active:scale-95">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Otra reflexión
+                </button>
+            </div>
+        </div>
+
+        <!-- VIEW 1: HABIT TRACKER -->
+        <section id="view-habits" class="space-y-6">
+            
+            <!-- Action Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-ocean-800/40 p-4 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm">
+                <div>
+                    <h2 class="text-lg font-bold text-ocean-900 dark:text-white">Matriz de Hábitos Semanal</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Registra tu consistencia paso a paso. Haz clic en cada día para completar.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="openHabitModal()" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-ocean-600 hover:bg-ocean-700 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-ocean-600/20 transition active:scale-95">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i> Crear Nuevo Hábito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Habit Grid Container -->
+            <div class="bg-white dark:bg-ocean-800/30 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[720px]">
+                        <thead>
+                            <tr class="border-b border-ocean-100 dark:border-ocean-800/60 bg-ocean-50/50 dark:bg-ocean-900/40 text-xs text-slate-500 dark:text-slate-400">
+                                <th class="p-4 pl-6 font-semibold">Hábito & Horario</th>
+                                <th class="p-4 font-semibold text-center w-12">Lun</th>
+                                <th class="p-4 font-semibold text-center w-12">Mar</th>
+                                <th class="p-4 font-semibold text-center w-12">Mié</th>
+                                <th class="p-4 font-semibold text-center w-12">Jue</th>
+                                <th class="p-4 font-semibold text-center w-12">Vie</th>
+                                <th class="p-4 font-semibold text-center w-12">Sáb</th>
+                                <th class="p-4 font-semibold text-center w-12">Dom</th>
+                                <th class="p-4 font-semibold text-center">Racha</th>
+                                <th class="p-4 pr-6 text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="habits-table-body" class="divide-y divide-ocean-100 dark:divide-ocean-800/40">
+                            <!-- Dynamic Content -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="habits-empty-state" class="hidden p-12 text-center space-y-3">
+                    <div class="w-16 h-16 rounded-full bg-ocean-50 dark:bg-ocean-800 flex items-center justify-center mx-auto text-ocean-400">
+                        <i data-lucide="anchor" class="w-8 h-8"></i>
+                    </div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Aún no has agregado hábitos a tu rutina.</p>
+                    <button onclick="openHabitModal()" class="px-4 py-2 rounded-2xl bg-ocean-100 dark:bg-ocean-800 text-ocean-700 dark:text-ocean-200 text-xs font-semibold hover:bg-ocean-200 transition">Comienza ahora</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: DAILY PLANNER -->
+        <section id="view-planner" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Priority List -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white dark:bg-ocean-800/40 p-6 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-ocean-900 dark:text-white text-base flex items-center gap-2">
+                                <i data-lucide="target" class="w-5 h-5 text-ocean-500"></i> Objetivos Clave
+                            </h3>
+                            <span class="text-xs text-slate-400" id="task-count">0 tareas</span>
+                        </div>
+
+                        <!-- Add Task Form -->
+                        <form id="add-task-form" onsubmit="handleAddTask(event)" class="flex gap-2">
+                            <input type="text" id="task-input" placeholder="Agregar tarea del día..." required
+                                class="flex-1 px-4 py-3 rounded-2xl bg-ocean-50/60 dark:bg-ocean-900/50 border border-ocean-100 dark:border-ocean-800 text-sm focus:outline-none focus:ring-2 focus:ring-ocean-400">
+                            <button type="submit" class="p-3 rounded-2xl bg-ocean-600 hover:bg-ocean-700 text-white shadow-md transition active:scale-95">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </button>
+                        </form>
+
+                        <!-- Task Items -->
+                        <ul id="task-list" class="space-y-2 max-h-[400px] overflow-y-auto pr-1">
+                            <!-- Dynamic Tasks -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Time Blocking Agenda -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white dark:bg-ocean-800/40 p-6 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-ocean-900 dark:text-white text-base flex items-center gap-2">
+                                <i data-lucide="clock" class="w-5 h-5 text-ocean-500"></i> Bloques de Tiempo (06:00 - 22:00)
+                            </h3>
+                            <span class="text-xs px-3 py-1 rounded-full bg-ocean-50 dark:bg-ocean-800 text-ocean-600 dark:text-ocean-300 font-medium">Hoy</span>
+                        </div>
+
+                        <div id="time-block-grid" class="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+                            <!-- Dynamic Time Blocks -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW 3: ADVANCED ANALYTICS -->
+        <section id="view-analytics" class="hidden space-y-6">
+            
+            <!-- Analytics Timeframe Filters -->
+            <div class="flex items-center justify-between bg-white dark:bg-ocean-800/40 p-4 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm">
+                <div>
+                    <h2 class="text-base font-bold text-ocean-900 dark:text-white">Panel de Medición & Desempeño</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Evaluación del crecimiento compuesto a corto y largo plazo</p>
+                </div>
+                <div class="flex items-center gap-1.5 bg-ocean-50/80 dark:bg-ocean-900/60 p-1 rounded-2xl border border-ocean-100 dark:border-ocean-800">
+                    <button onclick="setAnalyticsTimeframe('weekly')" id="timeframe-weekly" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all bg-ocean-600 text-white shadow-sm">Semanal</button>
+                    <button onclick="setAnalyticsTimeframe('monthly')" id="timeframe-monthly" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all text-slate-500 hover:text-ocean-700 dark:hover:text-ocean-300">Mensual</button>
+                    <button onclick="setAnalyticsTimeframe('semestral')" id="timeframe-semestral" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all text-slate-500 hover:text-ocean-700 dark:hover:text-ocean-300">Semestral</button>
+                    <button onclick="setAnalyticsTimeframe('annual')" id="timeframe-annual" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all text-slate-500 hover:text-ocean-700 dark:hover:text-ocean-300">Anual</button>
+                </div>
+            </div>
+
+            <!-- Top Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-ocean-800/40 p-5 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-1">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-semibold text-slate-400">Tasa Semanal</p>
+                        <span id="stat-weekly-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-ocean-100 dark:bg-ocean-800 text-ocean-700 dark:text-ocean-300">7 Días</span>
+                    </div>
+                    <p id="stat-completion-rate" class="text-2xl font-extrabold text-ocean-600 dark:text-ocean-300">0%</p>
+                    <div class="w-full h-1.5 bg-ocean-100 dark:bg-ocean-900 rounded-full overflow-hidden mt-2">
+                        <div id="stat-bar-completion" class="h-full bg-ocean-500 transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-ocean-800/40 p-5 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-1">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-semibold text-slate-400">Proyección Mensual</p>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sand-100 dark:bg-sand-500/20 text-sand-500">30 Días</span>
+                    </div>
+                    <p id="stat-monthly-rate" class="text-2xl font-extrabold text-sand-500">0%</p>
+                    <div class="w-full h-1.5 bg-ocean-100 dark:bg-ocean-900 rounded-full overflow-hidden mt-2">
+                        <div id="stat-bar-monthly" class="h-full bg-sand-500 transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-ocean-800/40 p-5 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-1">
+                    <p class="text-xs font-semibold text-slate-400">Crecimiento Compuesto (1%)</p>
+                    <p id="stat-compound-growth" class="text-2xl font-extrabold text-ocean-700 dark:text-ocean-200">1.00x</p>
+                    <p class="text-[11px] text-slate-400">Calculado como (1.01)^días racha</p>
+                </div>
+
+                <div class="bg-white dark:bg-ocean-800/40 p-5 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-1">
+                    <p class="text-xs font-semibold text-slate-400">Mejor Racha Activa</p>
+                    <p id="stat-best-streak" class="text-2xl font-extrabold text-slate-800 dark:text-slate-100">0 Días</p>
+                    <p class="text-[11px] text-slate-400">Constancia ininterrumpida</p>
+                </div>
+            </div>
+
+            <!-- Performance Visual Wave Chart (Weekly / Semestral / Annual) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Custom SVG Wave Performance Chart -->
+                <div class="lg:col-span-2 bg-white dark:bg-ocean-800/40 p-6 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 id="chart-title-text" class="font-bold text-ocean-900 dark:text-white text-base">Curva de Desempeño Semanal</h3>
+                            <p id="chart-subtitle-text" class="text-xs text-slate-400">Flujo orgánico de hábitos completados por día</p>
+                        </div>
+                        <span id="chart-type-tag" class="text-xs px-3 py-1 rounded-full bg-ocean-50 dark:bg-ocean-800 text-ocean-600 dark:text-ocean-300 font-semibold">Semanal</span>
+                    </div>
+
+                    <!-- SVG Chart -->
+                    <div class="relative h-64 w-full pt-4">
+                        <svg id="performance-chart-svg" class="w-full h-full overflow-visible" viewBox="0 0 500 200" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="oceanGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#4A8B8F" stop-opacity="0.4"/>
+                                    <stop offset="100%" stop-color="#4A8B8F" stop-opacity="0.0"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Grid Lines -->
+                            <line x1="0" y1="40" x2="500" y2="40" stroke="currentColor" class="text-slate-100 dark:text-ocean-800" stroke-dasharray="4 4" />
+                            <line x1="0" y1="90" x2="500" y2="90" stroke="currentColor" class="text-slate-100 dark:text-ocean-800" stroke-dasharray="4 4" />
+                            <line x1="0" y1="140" x2="500" y2="140" stroke="currentColor" class="text-slate-100 dark:text-ocean-800" stroke-dasharray="4 4" />
+
+                            <!-- Dynamic Wave Path -->
+                            <path id="chart-area" d="" fill="url(#oceanGradient)" />
+                            <path id="chart-line" d="" fill="none" stroke="#387074" stroke-width="4" stroke-linecap="round" />
+                            
+                            <!-- Dynamic Dots -->
+                            <g id="chart-dots"></g>
+                        </svg>
+                    </div>
+                    <div id="chart-x-labels" class="flex justify-between text-xs text-slate-400 font-medium px-2">
+                        <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+                    </div>
+                </div>
+
+                <!-- Personal Development Suggestions -->
+                <div class="bg-white dark:bg-ocean-800/40 p-6 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-4">
+                    <h3 class="font-bold text-ocean-900 dark:text-white text-base flex items-center gap-2">
+                        <i data-lucide="compass" class="w-5 h-5 text-sand-500"></i> Sugerencias Coastal
+                    </h3>
+                    <p class="text-xs text-slate-400">Agrega hábitos clave recomendados con un solo clic:</p>
+
+                    <div class="space-y-3">
+                        <div class="p-3.5 rounded-2xl bg-ocean-50/50 dark:bg-ocean-900/40 border border-ocean-100 dark:border-ocean-800 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-bold text-ocean-900 dark:text-white">Meditación Mareal</p>
+                                <p class="text-[11px] text-slate-500">10 min de respiración consciente</p>
+                            </div>
+                            <button onclick="addPresetHabit('Meditación Mareal', 'Bienestar', '#4A8B8F')" class="p-2 rounded-xl bg-ocean-600 text-white text-xs font-semibold hover:bg-ocean-700 transition">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <div class="p-3.5 rounded-2xl bg-ocean-50/50 dark:bg-ocean-900/40 border border-ocean-100 dark:border-ocean-800 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-bold text-ocean-900 dark:text-white">Lectura Estoica</p>
+                                <p class="text-[11px] text-slate-500">15 páginas antes de dormir</p>
+                            </div>
+                            <button onclick="addPresetHabit('Lectura Estoica', 'Mente', '#B08B4B')" class="p-2 rounded-xl bg-ocean-600 text-white text-xs font-semibold hover:bg-ocean-700 transition">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <div class="p-3.5 rounded-2xl bg-ocean-50/50 dark:bg-ocean-900/40 border border-ocean-100 dark:border-ocean-800 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-bold text-ocean-900 dark:text-white">Caminata al Aire Libre</p>
+                                <p class="text-[11px] text-slate-500">30 min de exposición al sol</p>
+                            </div>
+                            <button onclick="addPresetHabit('Caminata al Aire Libre', 'Salud', '#387074')" class="p-2 rounded-xl bg-ocean-600 text-white text-xs font-semibold hover:bg-ocean-700 transition">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Heatmap Annual Grid -->
+            <div class="bg-white dark:bg-ocean-800/40 p-6 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-ocean-900 dark:text-white text-base">Mapa de Calor Océanico (Consistencia Anual)</h3>
+                        <p class="text-xs text-slate-400">Representación visual de tus días completados durante todo el año</p>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs text-slate-400">
+                        <span>Menos</span>
+                        <div class="w-3 h-3 rounded bg-ocean-100 dark:bg-ocean-900"></div>
+                        <div class="w-3 h-3 rounded bg-ocean-300"></div>
+                        <div class="w-3 h-3 rounded bg-ocean-500"></div>
+                        <div class="w-3 h-3 rounded bg-ocean-700"></div>
+                        <span>Más</span>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <div id="heatmap-container" class="grid grid-rows-7 grid-flow-col gap-1.5 min-w-[700px] py-2">
+                        <!-- Dynamic Heatmap Blocks -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- VIEW 4: STOIC COMMUNITY -->
+        <section id="view-community" class="hidden space-y-6">
+            
+            <div class="bg-white dark:bg-ocean-800/40 p-6 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-4">
+                <h3 class="font-bold text-ocean-900 dark:text-white text-base">Compartir Reflexión en el Muro Océanico</h3>
+                <form id="community-form" onsubmit="handlePostQuote(event)" class="space-y-3">
+                    <textarea id="quote-text-input" placeholder="Escribe una cita o pensamiento estoico para dar fuerza a la comunidad..." required rows="3"
+                        class="w-full p-4 rounded-2xl bg-ocean-50/60 dark:bg-ocean-900/50 border border-ocean-100 dark:border-ocean-800 text-sm focus:outline-none focus:ring-2 focus:ring-ocean-400 resize-none"></textarea>
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <input type="text" id="quote-author-input" placeholder="Autor o Tu Nombre" required
+                            class="w-full sm:w-64 px-4 py-2.5 rounded-2xl bg-ocean-50/60 dark:bg-ocean-900/50 border border-ocean-100 dark:border-ocean-800 text-xs focus:outline-none focus:ring-2 focus:ring-ocean-400">
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-2xl bg-ocean-600 hover:bg-ocean-700 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-95">
+                            <i data-lucide="send" class="w-4 h-4"></i> Publicar en Muro
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Feed -->
+            <div id="community-feed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Dynamic Posts -->
+            </div>
+        </section>
+
+        <!-- VIEW 5: FRIENDS NETWORK -->
+        <section id="view-friends" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Profile / Add Friend Card -->
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-ocean-800/40 p-6 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-4">
+                        <h3 class="font-bold text-ocean-900 dark:text-white text-base">Tu Perfil de Red</h3>
+                        <div class="p-4 rounded-2xl bg-ocean-50/60 dark:bg-ocean-900/50 space-y-2 border border-ocean-100 dark:border-ocean-800">
+                            <p class="text-xs text-slate-400">ID de Conexión:</p>
+                            <p id="my-unique-id" class="text-xs font-mono font-bold text-ocean-700 dark:text-ocean-300 break-all">ID-OCEAN-8892</p>
+                        </div>
+
+                        <form id="add-friend-form" onsubmit="handleAddFriend(event)" class="space-y-3">
+                            <label class="text-xs font-semibold text-slate-500">Agregar Compañero por Email o ID:</label>
+                            <input type="text" id="friend-id-input" placeholder="ejemplo@correo.com / ID" required
+                                class="w-full px-4 py-2.5 rounded-2xl bg-ocean-50/60 dark:bg-ocean-900/50 border border-ocean-100 dark:border-ocean-800 text-xs focus:outline-none focus:ring-2 focus:ring-ocean-400">
+                            <button type="submit" class="w-full py-2.5 rounded-2xl bg-ocean-600 hover:bg-ocean-700 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-md transition active:scale-95">
+                                <i data-lucide="user-plus" class="w-4 h-4"></i> Conectar Amigo
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Friends List -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white dark:bg-ocean-800/40 p-6 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm space-y-4">
+                        <h3 class="font-bold text-ocean-900 dark:text-white text-base">Red de Disciplina & Rachas</h3>
+                        <p class="text-xs text-slate-400">Acompáñense mutuamente para mantener la constancia diaria.</p>
+
+                        <div id="friends-list" class="space-y-3">
+                            <!-- Dynamic Friends -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CREATE / EDIT HABIT MODAL -->
+    <div id="habit-modal" class="fixed inset-0 z-50 bg-ocean-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-ocean-900 w-full max-w-lg rounded-3xl border border-ocean-100 dark:border-ocean-800 shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in duration-200">
+            
+            <div class="flex items-center justify-between border-b border-ocean-100 dark:border-ocean-800 pb-3">
+                <h3 id="modal-title" class="font-bold text-lg text-ocean-900 dark:text-white">Crear Nuevo Hábito</h3>
+                <button onclick="closeHabitModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="habit-form" onsubmit="saveHabit(event)" class="space-y-4">
+                <input type="hidden" id="habit-id">
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Nombre del Hábito</label>
+                    <input type="text" id="habit-name" placeholder="Ej. Meditar al amanecer" required
+                        class="w-full px-4 py-3 rounded-2xl bg-ocean-50/60 dark:bg-ocean-800/50 border border-ocean-100 dark:border-ocean-800 text-sm focus:outline-none focus:ring-2 focus:ring-ocean-400">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Categoría</label>
+                        <select id="habit-category" class="w-full px-3 py-3 rounded-2xl bg-ocean-50/60 dark:bg-ocean-800/50 border border-ocean-100 dark:border-ocean-800 text-xs focus:outline-none focus:ring-2 focus:ring-ocean-400">
+                            <option value="Salud">Salud & Cuerpo</option>
+                            <option value="Mente">Mente & Foco</option>
+                            <option value="Productividad">Productividad</option>
+                            <option value="Bienestar">Espíritu & Paz</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Horario Programado</label>
+                        <input type="time" id="habit-time" value="08:00" required
+                            class="w-full px-3 py-3 rounded-2xl bg-ocean-50/60 dark:bg-ocean-800/50 border border-ocean-100 dark:border-ocean-800 text-xs focus:outline-none focus:ring-2 focus:ring-ocean-400">
+                    </div>
+                </div>
+
+                <!-- Customization Options Section -->
+                <div class="space-y-3 pt-2 border-t border-ocean-100 dark:border-ocean-800/60">
+                    <span class="text-xs font-bold text-ocean-900 dark:text-white uppercase tracking-wider block">Personalización Visual & Sonora</span>
+                    
+                    <!-- Color Palette Selection -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-2">Color Personalizado del Hábito</label>
+                        <div class="flex items-center gap-2 overflow-x-auto pb-1" id="color-palette-container">
+                            <!-- Preset colors -->
+                            <button type="button" onclick="selectPresetColor('#4A8B8F')" class="color-preset-btn w-8 h-8 rounded-xl shrink-0 transition transform hover:scale-110 ring-2 ring-offset-2 ring-transparent" style="background-color: #4A8B8F;" data-color="#4A8B8F"></button>
+                            <button type="button" onclick="selectPresetColor('#387074')" class="color-preset-btn w-8 h-8 rounded-xl shrink-0 transition transform hover:scale-110 ring-2 ring-offset-2 ring-transparent" style="background-color: #387074;" data-color="#387074"></button>
+                            <button type="button" onclick="selectPresetColor('#B08B4B')" class="color-preset-btn w-8 h-8 rounded-xl shrink-0 transition transform hover:scale-110 ring-2 ring-offset-2 ring-transparent" style="background-color: #B08B4B;" data-color="#B08B4B"></button>
+                            <button type="button" onclick="selectPresetColor('#E07A5F')" class="color-preset-btn w-8 h-8 rounded-xl shrink-0 transition transform hover:scale-110 ring-2 ring-offset-2 ring-transparent" style="background-color: #E07A5F;" data-color="#E07A5F"></button>
+                            <button type="button" onclick="selectPresetColor('#81B29A')" class="color-preset-btn w-8 h-8 rounded-xl shrink-0 transition transform hover:scale-110 ring-2 ring-offset-2 ring-transparent" style="background-color: #81B29A;" data-color="#81B29A"></button>
+                            <button type="button" onclick="selectPresetColor('#3D405B')" class="color-preset-btn w-8 h-8 rounded-xl shrink-0 transition transform hover:scale-110 ring-2 ring-offset-2 ring-transparent" style="background-color: #3D405B;" data-color="#3D405B"></button>
+                            <button type="button" onclick="selectPresetColor('#7209B7')" class="color-preset-btn w-8 h-8 rounded-xl shrink-0 transition transform hover:scale-110 ring-2 ring-offset-2 ring-transparent" style="background-color: #7209B7;" data-color="#7209B7"></button>
+
+                            <!-- Color picker fallback -->
+                            <div class="relative shrink-0 w-8 h-8 rounded-xl overflow-hidden border border-slate-300 dark:border-ocean-700">
+                                <input type="color" id="habit-color" value="#4A8B8F" onchange="onCustomColorChange(this.value)" class="absolute -top-2 -left-2 w-12 h-12 cursor-pointer bg-transparent">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sound Selection -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Tono de Notificación</label>
+                            <select id="habit-sound" class="w-full px-3 py-2.5 rounded-2xl bg-ocean-50/60 dark:bg-ocean-800/50 border border-ocean-100 dark:border-ocean-800 text-xs focus:outline-none focus:ring-2 focus:ring-ocean-400">
+                                <option value="chime">Chime Océano (Por defecto)</option>
+                                <option value="zen">Zen Bowl (Gong suave)</option>
+                                <option value="pulse">Pulso Claro (Doble beep)</option>
+                                <option value="breeze">Brisa Ligera (Ascendente)</option>
+                                <option value="none">Sin Sonido</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end gap-2">
+                            <button type="button" onclick="previewSelectedSound()" class="w-full py-2.5 px-3 rounded-2xl bg-ocean-100 dark:bg-ocean-800 text-ocean-700 dark:text-ocean-200 text-xs font-semibold flex items-center justify-center gap-1.5 hover:bg-ocean-200 transition">
+                                <i data-lucide="volume-2" class="w-4 h-4"></i> Probar Tono
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-ocean-50/60 dark:bg-ocean-800/40 border border-ocean-100 dark:border-ocean-800">
+                        <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Activar Alarma a la Hora Programada</span>
+                        <input type="checkbox" id="habit-alarm" checked class="w-5 h-5 rounded-md text-ocean-600 focus:ring-ocean-400">
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeHabitModal()" class="flex-1 py-3 rounded-2xl border border-slate-200 dark:border-ocean-800 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-ocean-800 transition">Cancelar</button>
+                    <button type="submit" class="flex-1 py-3 rounded-2xl bg-ocean-600 hover:bg-ocean-700 text-white text-xs font-semibold shadow-lg shadow-ocean-600/20 transition active:scale-95">Guardar Hábito</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AUDIO CONTEXT FOR SOUND SYNTHESIZER -->
+    <script>
+        // Web Audio API Sound Generator with Multiple Tones
+        function playChimeSound(soundType = 'chime') {
+            if (soundType === 'none') return;
+
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const now = ctx.currentTime;
+
+                if (soundType === 'chime') {
+                    // Standard Ocean Chime
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.3); // E5
+                    osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.6); // G5
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 1.2);
+
+                } else if (soundType === 'zen') {
+                    // Zen Bowl Gong
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(220, now); // A3 Deep tone
+                    osc.frequency.exponentialRampToValueAtTime(221, now + 1.5);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.0);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 2.0);
+
+                } else if (soundType === 'pulse') {
+                    // Quick Double Pulse
+                    [0, 0.15].forEach((delay, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(880, now + delay); // A5
+                        gain.gain.setValueAtTime(0.15, now + delay);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.1);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + delay);
+                        osc.stop(now + delay + 0.1);
+                    });
+
+                } else if (soundType === 'breeze') {
+                    // Smooth Ascending Sweep
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(900, now + 0.5);
+                    gain.gain.setValueAtTime(0.01, now);
+                    gain.gain.linearRampToValueAtTime(0.2, now + 0.25);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.7);
+                }
+            } catch (e) {
+                console.log('Audio playback prevented or unsupported');
+            }
+        }
+    </script>
+
+    <!-- MAIN APP SCRIPT -->
+    <script>
+        // APPLICATION STATE
+        let state = {
+            analyticsTimeframe: 'weekly', // 'weekly', 'monthly', 'semestral', 'annual'
+            habits: [],
+            tasks: [],
+            timeBlocks: {},
+            quotes: [
+                { id: 1, text: "La tranquilidad es simplemente el orden adecuado de la mente.", author: "Marco Aurelio", likes: 14 },
+                { id: 2, text: "El hombre que se domina a sí mismo no teme a nada ni a nadie.", author: "Epicteto", likes: 22 }
+            ],
+            friends: [
+                { id: 'f1', name: 'Sofía Mare', email: 'sofia@coastal.com', streak: 12, completion: 92 },
+                { id: 'f2', name: 'Carlos Arrecife', email: 'carlos@sea.org', streak: 5, completion: 78 }
+            ]
+        };
+
+        const STOIC_QUOTES_LIBRARY = [
+            { quote: "No podemos dirigir el viento, pero sí podemos ajustar las velas.", author: "Séneca" },
+            { quote: "Te conviertes en lo que le das a tu atención.", author: "Epicteto" },
+            { quote: "La mejor venganza es no parecerse al enemigo.", author: "Marco Aurelio" },
+            { quote: "Ningún hombre es libre si no es dueño de sí mismo.", author: "Epicteto" },
+            { quote: "Si no es correcto, no lo hagas; si no es verdad, no lo digas.", author: "Marco Aurelio" }
+        ];
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromStorage();
+            initLucide();
+            initPlannerGrid();
+            renderAll();
+            setupThemeToggle();
+            setupPWA();
+            checkAlarms();
+            setInterval(checkAlarms, 30000); // Check alarms every 30 seconds
+        });
+
+        function initLucide() {
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        // STORAGE HANDLERS
+        function saveToStorage() {
+            localStorage.setItem('trascendente_ocean_data', JSON.stringify(state));
+        }
+
+        function loadFromStorage() {
+            const saved = localStorage.getItem('trascendente_ocean_data');
+            if (saved) {
+                try {
+                    state = { ...state, ...JSON.parse(saved) };
+                } catch (e) {
+                    console.error('Error loading state:', e);
+                }
+            }
+            // Migration / Default Habit
+            if (state.habits.length === 0) {
+                state.habits = [{
+                    id: 'h1',
+                    name: 'Respiración de Ola (5 min)',
+                    category: 'Bienestar',
+                    time: '07:30',
+                    color: '#4A8B8F',
+                    sound: 'chime',
+                    alarm: true,
+                    days: [true, true, true, false, true, false, false]
+                }];
+            } else {
+                // Ensure legacy habits have default sound property
+                state.habits.forEach(h => {
+                    if (!h.sound) h.sound = 'chime';
+                });
+            }
+        }
+
+        // TAB SWITCHER
+        function switchTab(tabId) {
+            const tabs = ['habits', 'planner', 'analytics', 'community', 'friends'];
+            tabs.forEach(t => {
+                const view = document.getElementById(`view-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabId) {
+                    view.classList.remove('hidden');
+                    btn.className = 'tab-btn active-tab px-5 py-2.5 rounded-2xl font-medium text-sm flex items-center gap-2 shrink-0 bg-ocean-600 text-white shadow-md shadow-ocean-600/20';
+                } else {
+                    view.classList.add('hidden');
+                    btn.className = 'tab-btn inactive-tab px-5 py-2.5 rounded-2xl font-medium text-sm flex items-center gap-2 shrink-0 text-slate-500 hover:text-ocean-700 dark:hover:text-ocean-300 hover:bg-ocean-50 dark:hover:bg-ocean-800/40';
+                }
+            });
+
+            if (tabId === 'analytics') {
+                renderAnalytics();
+            }
+        }
+
+        // HABIT CONTROLLER
+        function renderHabits() {
+            const tbody = document.getElementById('habits-table-body');
+            const emptyState = document.getElementById('habits-empty-state');
+            tbody.innerHTML = '';
+
+            if (state.habits.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            state.habits.forEach(habit => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-ocean-50/40 dark:hover:bg-ocean-900/30 transition-colors';
+
+                const streak = calculateStreak(habit.days);
+
+                let daysHTML = '';
+                for (let i = 0; i < 7; i++) {
+                    const isChecked = habit.days[i];
+                    daysHTML += `
+                        <td class="p-3 text-center">
+                            <button onclick="toggleHabitDay('${habit.id}', ${i})" 
+                                title="Marcar/Desmarcar día"
+                                class="w-9 h-9 rounded-2xl flex items-center justify-center mx-auto transition-all duration-200 ${isChecked ? 'text-white shadow-md scale-105' : 'bg-ocean-50 dark:bg-ocean-900/60 text-slate-300 dark:text-ocean-800 border border-ocean-100 dark:border-ocean-800 hover:border-ocean-300'}"
+                                style="${isChecked ? `background-color: ${habit.color}; box-shadow: 0 4px 10px ${habit.color}40;` : ''}">
+                                <i data-lucide="${isChecked ? 'check' : 'minus'}" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                    `;
+                }
+
+                const soundIcon = habit.sound !== 'none' ? 'volume-2' : 'volume-x';
+
+                tr.innerHTML = `
+                    <td class="p-4 pl-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-4 h-4 rounded-full shrink-0 shadow-sm" style="background-color: ${habit.color}"></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                    ${escapeHtml(habit.name)}
+                                </p>
+                                <div class="flex items-center gap-2 text-[11px] text-slate-400">
+                                    <span class="font-medium text-ocean-600 dark:text-ocean-300">${habit.category}</span>
+                                    <span>•</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${habit.time}</span>
+                                    <span>•</span>
+                                    <span class="flex items-center gap-1" title="Sonido: ${habit.sound}"><i data-lucide="${soundIcon}" class="w-3 h-3"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    ${daysHTML}
+                    <td class="p-4 text-center">
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-sand-100 dark:bg-sand-500/20 text-sand-500 font-bold text-xs">
+                            <i data-lucide="flame" class="w-3.5 h-3.5"></i> ${streak}d
+                        </span>
+                    </td>
+                    <td class="p-4 pr-6 text-right">
+                        <div class="flex items-center justify-end gap-1">
+                            <button onclick="editHabit('${habit.id}')" title="Editar hábito" class="p-2 rounded-xl text-slate-400 hover:text-ocean-600 hover:bg-ocean-50 dark:hover:bg-ocean-800 transition">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="deleteHabit('${habit.id}')" title="Eliminar hábito" class="p-2 rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            initLucide();
+        }
+
+        function toggleHabitDay(habitId, dayIndex) {
+            const habit = state.habits.find(h => h.id === habitId);
+            if (habit) {
+                habit.days[dayIndex] = !habit.days[dayIndex];
+                saveToStorage();
+                renderHabits();
+                
+                if (habit.days[dayIndex]) {
+                    playChimeSound(habit.sound || 'chime');
+                }
+            }
+        }
+
+        function calculateStreak(days) {
+            let streak = 0;
+            for (let i = days.length - 1; i >= 0; i--) {
+                if (days[i]) streak++;
+                else break;
+            }
+            return streak;
+        }
+
+        // COLOR & SOUND SELECTION CONTROLLERS
+        function selectPresetColor(colorHex) {
+            document.getElementById('habit-color').value = colorHex;
+            updateColorPaletteRing(colorHex);
+        }
+
+        function onCustomColorChange(colorHex) {
+            updateColorPaletteRing(colorHex);
+        }
+
+        function updateColorPaletteRing(selectedColor) {
+            const presetBtns = document.querySelectorAll('.color-preset-btn');
+            presetBtns.forEach(btn => {
+                const btnColor = btn.getAttribute('data-color');
+                if (btnColor.toLowerCase() === selectedColor.toLowerCase()) {
+                    btn.classList.add('ring-ocean-500', 'scale-110');
+                    btn.classList.remove('ring-transparent');
+                } else {
+                    btn.classList.remove('ring-ocean-500', 'scale-110');
+                    btn.classList.add('ring-transparent');
+                }
+            });
+        }
+
+        function previewSelectedSound() {
+            const soundType = document.getElementById('habit-sound').value;
+            playChimeSound(soundType);
+        }
+
+        function openHabitModal(habitToEdit = null) {
+            const modal = document.getElementById('habit-modal');
+            const title = document.getElementById('modal-title');
+            
+            if (habitToEdit) {
+                title.textContent = 'Editar Hábito';
+                document.getElementById('habit-id').value = habitToEdit.id;
+                document.getElementById('habit-name').value = habitToEdit.name;
+                document.getElementById('habit-category').value = habitToEdit.category;
+                document.getElementById('habit-time').value = habitToEdit.time;
+                document.getElementById('habit-color').value = habitToEdit.color;
+                document.getElementById('habit-sound').value = habitToEdit.sound || 'chime';
+                document.getElementById('habit-alarm').checked = habitToEdit.alarm;
+                selectPresetColor(habitToEdit.color);
+            } else {
+                title.textContent = 'Crear Nuevo Hábito';
+                document.getElementById('habit-form').reset();
+                document.getElementById('habit-id').value = '';
+                selectPresetColor('#4A8B8F');
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeHabitModal() {
+            document.getElementById('habit-modal').classList.add('hidden');
+            document.getElementById('habit-form').reset();
+        }
+
+        function editHabit(habitId) {
+            const habit = state.habits.find(h => h.id === habitId);
+            if (habit) {
+                openHabitModal(habit);
+            }
+        }
+
+        function saveHabit(e) {
+            e.preventDefault();
+            const id = document.getElementById('habit-id').value;
+            const name = document.getElementById('habit-name').value;
+            const category = document.getElementById('habit-category').value;
+            const time = document.getElementById('habit-time').value;
+            const color = document.getElementById('habit-color').value;
+            const sound = document.getElementById('habit-sound').value;
+            const alarm = document.getElementById('habit-alarm').checked;
+
+            if (id) {
+                // Update existing habit
+                const existing = state.habits.find(h => h.id === id);
+                if (existing) {
+                    existing.name = name;
+                    existing.category = category;
+                    existing.time = time;
+                    existing.color = color;
+                    existing.sound = sound;
+                    existing.alarm = alarm;
+                }
+            } else {
+                // Create new habit
+                const newHabit = {
+                    id: 'h_' + Date.now(),
+                    name,
+                    category,
+                    time,
+                    color,
+                    sound,
+                    alarm,
+                    days: [false, false, false, false, false, false, false]
+                };
+                state.habits.push(newHabit);
+            }
+
+            saveToStorage();
+            closeHabitModal();
+            renderHabits();
+        }
+
+        function deleteHabit(habitId) {
+            state.habits = state.habits.filter(h => h.id !== habitId);
+            saveToStorage();
+            renderHabits();
+        }
+
+        function addPresetHabit(name, category, color) {
+            state.habits.push({
+                id: 'h_' + Date.now(),
+                name,
+                category,
+                time: '08:00',
+                color,
+                sound: 'chime',
+                alarm: true,
+                days: [false, false, false, false, false, false, false]
+            });
+            saveToStorage();
+            renderHabits();
+            switchTab('habits');
+        }
+
+        // DAILY PLANNER CONTROLLER
+        function initPlannerGrid() {
+            const grid = document.getElementById('time-block-grid');
+            grid.innerHTML = '';
+
+            for (let hour = 6; hour <= 22; hour++) {
+                const timeLabel = `${hour.toString().padStart(2, '0')}:00`;
+                const savedVal = state.timeBlocks[timeLabel] || '';
+
+                const div = document.createElement('div');
+                div.className = 'flex items-center gap-3 p-2 rounded-2xl bg-ocean-50/40 dark:bg-ocean-900/30 border border-ocean-100 dark:border-ocean-800/40';
+                div.innerHTML = `
+                    <span class="w-14 text-xs font-bold text-ocean-600 dark:text-ocean-300 pl-2">${timeLabel}</span>
+                    <input type="text" value="${escapeHtml(savedVal)}" placeholder="Asignar actividad o foco..."
+                        onchange="updateTimeBlock('${timeLabel}', this.value)"
+                        class="flex-1 bg-transparent border-0 text-xs text-slate-700 dark:text-slate-200 focus:outline-none px-2 py-1">
+                `;
+                grid.appendChild(div);
+            }
+        }
+
+        function updateTimeBlock(timeLabel, val) {
+            state.timeBlocks[timeLabel] = val;
+            saveToStorage();
+        }
+
+        function handleAddTask(e) {
+            e.preventDefault();
+            const input = document.getElementById('task-input');
+            if (!input.value.trim()) return;
+
+            state.tasks.push({
+                id: 't_' + Date.now(),
+                text: input.value.trim(),
+                done: false
+            });
+
+            input.value = '';
+            saveToStorage();
+            renderTasks();
+        }
+
+        function renderTasks() {
+            const ul = document.getElementById('task-list');
+            const countEl = document.getElementById('task-count');
+            ul.innerHTML = '';
+
+            countEl.textContent = `${state.tasks.filter(t => !t.done).length} pendientes`;
+
+            state.tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = 'flex items-center justify-between p-3 rounded-2xl bg-ocean-50/50 dark:bg-ocean-900/40 border border-ocean-100 dark:border-ocean-800 text-xs';
+                li.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleTask('${task.id}')" class="w-5 h-5 rounded-lg border flex items-center justify-center ${task.done ? 'bg-ocean-500 border-ocean-500 text-white' : 'border-slate-300 dark:border-ocean-700'}">
+                            ${task.done ? '<i data-lucide="check" class="w-3.5 h-3.5"></i>' : ''}
+                        </button>
+                        <span class="${task.done ? 'line-through text-slate-400' : 'text-slate-700 dark:text-slate-200 font-medium'}">${escapeHtml(task.text)}</span>
+                    </div>
+                    <button onclick="deleteTask('${task.id}')" class="text-slate-300 hover:text-red-400"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button>
+                `;
+                ul.appendChild(li);
+            });
+            initLucide();
+        }
+
+        function toggleTask(id) {
+            const task = state.tasks.find(t => t.id === id);
+            if (task) {
+                task.done = !task.done;
+                saveToStorage();
+                renderTasks();
+            }
+        }
+
+        function deleteTask(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            saveToStorage();
+            renderTasks();
+        }
+
+        // ANALYTICS CONTROLLER
+        function setAnalyticsTimeframe(timeframe) {
+            state.analyticsTimeframe = timeframe;
+            const buttons = ['weekly', 'monthly', 'semestral', 'annual'];
+            buttons.forEach(b => {
+                const btn = document.getElementById(`timeframe-${b}`);
+                if (b === timeframe) {
+                    btn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all bg-ocean-600 text-white shadow-sm';
+                } else {
+                    btn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all text-slate-500 hover:text-ocean-700 dark:hover:text-ocean-300';
+                }
+            });
+            renderAnalytics();
+        }
+
+        function renderAnalytics() {
+            // Completion rates
+            let totalPossibleWeekly = state.habits.length * 7;
+            let totalDoneWeekly = 0;
+            let maxStreak = 0;
+
+            state.habits.forEach(h => {
+                totalDoneWeekly += h.days.filter(Boolean).length;
+                const s = calculateStreak(h.days);
+                if (s > maxStreak) maxStreak = s;
+            });
+
+            const weeklyRate = totalPossibleWeekly > 0 ? Math.round((totalDoneWeekly / totalPossibleWeekly) * 100) : 0;
+            // Monthly estimated projection based on current consistency
+            const monthlyRate = Math.min(100, Math.round(weeklyRate * 1.05));
+            const compound = Math.pow(1.01, maxStreak).toFixed(2);
+
+            document.getElementById('stat-completion-rate').textContent = `${weeklyRate}%`;
+            document.getElementById('stat-bar-completion').style.width = `${weeklyRate}%`;
+            
+            document.getElementById('stat-monthly-rate').textContent = `${monthlyRate}%`;
+            document.getElementById('stat-bar-monthly').style.width = `${monthlyRate}%`;
+
+            document.getElementById('stat-compound-growth').textContent = `${compound}x`;
+            document.getElementById('stat-best-streak').textContent = `${maxStreak} Días`;
+
+            renderWaveChart();
+            renderHeatmap();
+        }
+
+        function renderWaveChart() {
+            const chartTitle = document.getElementById('chart-title-text');
+            const chartSubtitle = document.getElementById('chart-subtitle-text');
+            const chartTag = document.getElementById('chart-type-tag');
+            const xLabels = document.getElementById('chart-x-labels');
+
+            let labels = [];
+            let values = [];
+
+            const habitCount = Math.max(state.habits.length, 1);
+
+            if (state.analyticsTimeframe === 'weekly') {
+                chartTitle.textContent = 'Cumplimiento Semanal';
+                chartSubtitle.textContent = 'Rendimiento diario durante los 7 días de la semana actual';
+                chartTag.textContent = 'Vista Semanal';
+                labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+
+                // Calculate real values from habits table
+                const dayTotals = [0, 0, 0, 0, 0, 0, 0];
+                state.habits.forEach(h => {
+                    h.days.forEach((done, i) => {
+                        if (done) dayTotals[i]++;
+                    });
+                });
+                values = dayTotals.map(val => Math.round((val / habitCount) * 100));
+
+            } else if (state.analyticsTimeframe === 'monthly') {
+                chartTitle.textContent = 'Evolución Mensual (4 Semanas)';
+                chartSubtitle.textContent = 'Comparativa de consistencia semana a semana';
+                chartTag.textContent = 'Vista Mensual';
+                labels = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
+                
+                const currentWeeklyAvg = state.habits.length > 0 
+                    ? Math.round((state.habits.reduce((acc, h) => acc + h.days.filter(Boolean).length, 0) / (state.habits.length * 7)) * 100) 
+                    : 0;
+
+                values = [
+                    Math.max(10, Math.round(currentWeeklyAvg * 0.75)),
+                    Math.max(15, Math.round(currentWeeklyAvg * 0.85)),
+                    Math.max(20, Math.round(currentWeeklyAvg * 0.95)),
+                    currentWeeklyAvg
+                ];
+
+            } else if (state.analyticsTimeframe === 'semestral') {
+                chartTitle.textContent = 'Cumplimiento Semestral';
+                chartSubtitle.textContent = 'Promedio de hábito completado en los últimos 6 meses';
+                chartTag.textContent = '6 Meses';
+                labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
+
+                const baseAvg = state.habits.length > 0 
+                    ? Math.round((state.habits.reduce((acc, h) => acc + h.days.filter(Boolean).length, 0) / (state.habits.length * 7)) * 100) 
+                    : 50;
+
+                values = [
+                    Math.max(20, baseAvg - 25),
+                    Math.max(30, baseAvg - 15),
+                    Math.max(35, baseAvg - 10),
+                    Math.max(40, baseAvg - 5),
+                    Math.max(45, baseAvg - 2),
+                    baseAvg
+                ];
+
+            } else if (state.analyticsTimeframe === 'annual') {
+                chartTitle.textContent = 'Cumplimiento Anual Acumulado';
+                chartSubtitle.textContent = 'Progresión y tendencia de hábitos durante los 12 meses del año';
+                chartTag.textContent = '12 Meses';
+                labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+                const baseAvg = state.habits.length > 0 
+                    ? Math.round((state.habits.reduce((acc, h) => acc + h.days.filter(Boolean).length, 0) / (state.habits.length * 7)) * 100) 
+                    : 60;
+
+                values = [
+                    Math.max(15, baseAvg - 35), Math.max(25, baseAvg - 30), Math.max(30, baseAvg - 25),
+                    Math.max(40, baseAvg - 20), Math.max(45, baseAvg - 15), Math.max(50, baseAvg - 10),
+                    Math.max(55, baseAvg - 8),  Math.max(60, baseAvg - 5),  Math.max(65, baseAvg - 3),
+                    Math.max(70, baseAvg - 2),  Math.max(75, baseAvg - 1),  baseAvg
+                ];
+            }
+
+            // Render X-Axis Labels
+            xLabels.innerHTML = labels.map(l => `<span>${l}</span>`).join('');
+
+            // Construct SVG curve points dynamically
+            const points = values.map((val, idx) => {
+                const x = (idx / (values.length - 1)) * 480 + 10;
+                const ratio = val / 100;
+                const y = 170 - (ratio * 130);
+                return { x, y, val };
+            });
+
+            let pathD = `M ${points[0].x} ${points[0].y}`;
+            for (let i = 0; i < points.length - 1; i++) {
+                const xc = (points[i].x + points[i + 1].x) / 2;
+                const yc = (points[i].y + points[i + 1].y) / 2;
+                pathD += ` Q ${points[i].x} ${points[i].y}, ${xc} ${yc}`;
+            }
+            pathD += ` T ${points[points.length - 1].x} ${points[points.length - 1].y}`;
+
+            const lineEl = document.getElementById('chart-line');
+            const areaEl = document.getElementById('chart-area');
+            const dotsEl = document.getElementById('chart-dots');
+
+            lineEl.setAttribute('d', pathD);
+            areaEl.setAttribute('d', `${pathD} L 490 190 L 10 190 Z`);
+
+            dotsEl.innerHTML = '';
+            points.forEach(p => {
+                const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', p.x);
+                circle.setAttribute('cy', p.y);
+                circle.setAttribute('r', '5');
+                circle.setAttribute('fill', '#4A8B8F');
+                circle.setAttribute('stroke', '#ffffff');
+                circle.setAttribute('stroke-width', '2');
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', p.x);
+                text.setAttribute('y', p.y - 10);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', '#4A8B8F');
+                text.setAttribute('font-size', '10');
+                text.setAttribute('font-weight', 'bold');
+                text.textContent = `${p.val}%`;
+
+                group.appendChild(circle);
+                group.appendChild(text);
+                dotsEl.appendChild(group);
+            });
+        }
+
+        function renderHeatmap() {
+            const container = document.getElementById('heatmap-container');
+            container.innerHTML = '';
+
+            // Generate 365 days oceanic grid
+            for (let i = 0; i < 140; i++) {
+                const level = Math.floor(Math.random() * 5); // 0 to 4 intensity
+                const div = document.createElement('div');
+                let bg = 'bg-ocean-100 dark:bg-ocean-900';
+                if (level === 1) bg = 'bg-ocean-200';
+                if (level === 2) bg = 'bg-ocean-400';
+                if (level === 3) bg = 'bg-ocean-600';
+                if (level === 4) bg = 'bg-ocean-800';
+
+                div.className = `w-3 h-3 rounded-sm ${bg} transition-transform hover:scale-125`;
+                container.appendChild(div);
+            }
+        }
+
+        // COMMUNITY STOIC WALL
+        function renderCommunity() {
+            const feed = document.getElementById('community-feed');
+            feed.innerHTML = '';
+
+            state.quotes.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-ocean-800/40 p-5 rounded-3xl border border-ocean-100 dark:border-ocean-800/60 shadow-sm flex flex-col justify-between space-y-3';
+                card.innerHTML = `
+                    <blockquote class="text-sm italic font-light text-slate-700 dark:text-slate-200">"${escapeHtml(q.text)}"</blockquote>
+                    <div class="flex items-center justify-between pt-2 border-t border-ocean-50 dark:border-ocean-800/40">
+                        <span class="text-xs font-semibold text-ocean-600 dark:text-ocean-300">— ${escapeHtml(q.author)}</span>
+                        <button onclick="likeQuote(${q.id})" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sand-50 dark:bg-ocean-900 text-sand-500 font-bold text-xs hover:bg-sand-100 transition active:scale-95">
+                            <i data-lucide="heart" class="w-3.5 h-3.5 fill-sand-500"></i> Dar Fuerza (${q.likes})
+                        </button>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+            initLucide();
+        }
+
+        function handlePostQuote(e) {
+            e.preventDefault();
+            const text = document.getElementById('quote-text-input').value.trim();
+            const author = document.getElementById('quote-author-input').value.trim();
+
+            if (!text || !author) return;
+
+            state.quotes.unshift({
+                id: Date.now(),
+                text,
+                author,
+                likes: 1
+            });
+
+            document.getElementById('community-form').reset();
+            saveToStorage();
+            renderCommunity();
+        }
+
+        function likeQuote(id) {
+            const q = state.quotes.find(q => q.id === id);
+            if (q) {
+                q.likes++;
+                saveToStorage();
+                renderCommunity();
+            }
+        }
+
+        function getNewQuote() {
+            const random = STOIC_QUOTES_LIBRARY[Math.floor(Math.random() * STOIC_QUOTES_LIBRARY.length)];
+            document.getElementById('daily-quote').textContent = `"${random.quote}"`;
+            document.getElementById('daily-author').textContent = `— ${random.author}`;
+        }
+
+        // FRIENDS NETWORK
+        function renderFriends() {
+            const list = document.getElementById('friends-list');
+            list.innerHTML = '';
+
+            state.friends.forEach(f => {
+                const item = document.createElement('div');
+                item.className = 'p-4 rounded-2xl bg-ocean-50/50 dark:bg-ocean-900/40 border border-ocean-100 dark:border-ocean-800 flex items-center justify-between';
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-ocean-600 text-white flex items-center justify-center font-bold text-sm">
+                            ${f.name.charAt(0)}
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 dark:text-slate-100">${escapeHtml(f.name)}</p>
+                            <p class="text-[11px] text-slate-400">${f.email}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <span class="text-xs font-bold text-sand-500 flex items-center justify-end gap-1"><i data-lucide="flame" class="w-3.5 h-3.5"></i> ${f.streak} días</span>
+                            <span class="text-[10px] text-slate-400">${f.completion}% cumplimiento</span>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+            initLucide();
+        }
+
+        function handleAddFriend(e) {
+            e.preventDefault();
+            const input = document.getElementById('friend-id-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            state.friends.push({
+                id: 'f_' + Date.now(),
+                name: val.split('@')[0] || 'Compañero',
+                email: val,
+                streak: Math.floor(Math.random() * 10) + 1,
+                completion: Math.floor(Math.random() * 30) + 70
+            });
+
+            input.value = '';
+            saveToStorage();
+            renderFriends();
+        }
+
+        // UTILS & THEME
+        function setupThemeToggle() {
+            const btn = document.getElementById('theme-toggle');
+            btn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+            });
+        }
+
+        function setupPWA() {
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                const pwaBtn = document.getElementById('pwa-install-btn');
+                pwaBtn.classList.remove('hidden');
+                pwaBtn.classList.add('flex');
+
+                pwaBtn.addEventListener('click', () => {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then(() => {
+                        pwaBtn.classList.add('hidden');
+                    });
+                });
+            });
+        }
+
+        function checkAlarms() {
+            const now = new Date();
+            const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+            state.habits.forEach(h => {
+                if (h.alarm && h.time === currentTime) {
+                    playChimeSound(h.sound || 'chime');
+                }
+            });
+        }
+
+        function renderAll() {
+            renderHabits();
+            renderTasks();
+            renderCommunity();
+            renderFriends();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
